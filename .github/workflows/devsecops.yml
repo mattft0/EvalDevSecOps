@@ -1,0 +1,40 @@
+name: DevSecOps CI
+
+
+on:
+ push:
+   branches:
+     - develop
+ pull_request:
+   branches:
+     - main
+     - develop
+
+
+jobs:
+ # Job pour tests unitaires et SCA
+ test-and-sca:
+   runs-on: ubuntu-latest
+   name: Unit Tests + SCA
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v3
+
+
+     - name: Setup Node.js
+       uses: actions/setup-node@v3
+       with:
+         node-version: '22'
+
+
+     - name: Install dependencies
+       run: npm install
+
+
+     - name: Run unit tests
+       run: npm test
+
+
+     - name: Run SCA (npm audit)
+       run: npm audit --audit-level=moderate
+
